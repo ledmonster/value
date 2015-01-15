@@ -16,8 +16,15 @@ class Value(object):
         if not all(type(p) is str for p in para):
             raise ValueError('parameter unpacking is not allowed in __init__')
         defaults = () if not defaults else defaults
-        self.__dict__.update(dict(zip(para[:0:-1], defaults[::-1])))
-        self.__dict__.update(dict(zip(para[1:], args) + kwargs.items()))
+        params = dict(zip(para[:0:-1], defaults[::-1]))
+        params.update(dict(zip(para[1:], args) + kwargs.items()))
+        self.__params = params
+
+        def setprop(key):
+            setattr(class_, key, property(lambda x: x.__params[key]))
+
+        for k in params:
+            setprop(k)
         return self
 
     def __repr__(self):

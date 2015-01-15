@@ -56,7 +56,15 @@ def test_varargs_and_kwargs_are_not_allowed():
     with raises(ValueError):
         Option()
 
+
 def test_tuple_parameter_unpacking_is_not_allowed():
     Option = fixture(lambda self, (one, two): None)
     with raises(ValueError):
         Option()
+
+
+def test_immutable():
+    Option = fixture(lambda self, short, long: None)
+    option = Option('-a', '--all')
+    with raises(AttributeError):
+        option.short = '-b'
