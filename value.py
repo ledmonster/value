@@ -28,15 +28,11 @@ class Value(object):
         return self
 
     def __repr__(self):
-        null = object()
-        para, _, _, defaults = getargspec(self.__init__)
-        para = para[1:]
-        actuals = [getattr(self, p) for p in para]
-        defaults = () if not defaults else defaults
-        defaults = defaults[1:] if len(defaults) == len(para) + 1 else defaults
-        defaults = (null,) * (len(para) - len(defaults)) + defaults
-        return '%s(%s)' % (self.__class__.__name__,
-                ', '.join(repr(a) for a, d in zip(actuals, defaults) if a != d))
+        params, _, _, _ = getargspec(self.__init__)
+        params = params[1:]
+        return '%s(%s)' % (
+            self.__class__.__name__,
+            ', '.join(repr(self.__params[k]) for k in params))
 
     def __hash__(self):
         return hash(repr(self))

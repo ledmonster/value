@@ -35,15 +35,15 @@ def test_init_without_defaults():
 
 def test_init_with_defaults():
     Option = fixture(lambda self, short, long='--default': None)
-    assert repr(Option('-a')) == "Option('-a')"
-    assert repr(Option('-a', '--default')) == "Option('-a')"
+    assert repr(Option('-a')) == "Option('-a', '--default')"
+    assert repr(Option('-a', '--default')) == "Option('-a', '--default')"
     assert repr(Option('-a', '--all')) == "Option('-a', '--all')"
     assert 'self' not in Option('-a').__dict__
 
 
 def test_corner_case_of_self_with_default():
     Option = fixture(lambda self='<self>', short='-a': None)
-    assert repr(Option('-a')) == "Option()"
+    assert repr(Option('-a')) == "Option('-a')"
     assert repr(Option('-b')) == "Option('-b')"
     assert 'self' not in Option('-a').__dict__
 
